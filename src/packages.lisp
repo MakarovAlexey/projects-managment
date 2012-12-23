@@ -33,6 +33,7 @@
 	   #:+INV-WRITE+
 	   #:+INV-READ+
 	   #:+LARGE-OBJECT-BUFFER-SIZE+
+	   #:open-large-object
 	   #:lo-create
 	   #:lo-unlink
 	   #:lo-open

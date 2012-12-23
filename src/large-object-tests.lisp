@@ -46,3 +46,27 @@
 			   *test-value*)))
 	(lo-close fd)
 	(lo-unlink *oid*)))))
+
+(addtest stream-writing
+  (postmodern:with-connection '("test" "postgres" "zxcvb" "localhost")
+    (postmodern:with-transaction ()
+      (with-open-stream (stream (open-large-object (lo-create *oid*) +INV-WRITE+))
+	(write-sequence (make-array 1024
+				    :element-type '(unsigned-byte 8)
+				    :initial-element 0) stream))
+      (lo-unlink *oid*))))
+
+(addtest stream-reading
+  (postmodern:with-connection '("test" "postgres" "zxcvb" "localhost")
+    (postmodern:with-transaction ()
+      (lo-create *oid*)
+      (let ((fd (lo-open *oid* (logior +INV-WRITE+))))
+	(lo-write fd *test-value*)
+	(lo-close fd)))
+    (postmodern:with-transaction ()
+      (with-open-stream (stream (open-large-object *oid* +INV-READ+))
+	(let ((content (make-array 1024 :element-type '(unsigned-byte 8))))
+	  (read-sequence content stream)
+	  (ensure #'(lambda ()
+		      (every #'eq content *test-value*)))))
+      (lo-unlink *oid*))))

@@ -24,6 +24,7 @@
     :components ((:module "templates"
 			  :components ((:closure-template-file "index")))
 		 (:module "src"
+			  :serial t
                           :depends-on ("templates")
 			  :components ((:file "packages")
 				       (:file "large-object")
