@@ -34,22 +34,37 @@
 (defprepared-with-names lo-unlink (oid)
   ((:select (:lo-unlink '$1)) oid) :single)
 
-(defclass large-object-stream
+(defclass large-object-stream-mixin
     (fundamental-binary-stream
      trivial-gray-stream-mixin)
-  ((fd :initarg :fd :reader fd-of)))
+  ((file-descriptor :initarg :fd :reader fd-of)))
 
-(defmethod stream-element-type ((stream large-object-stream))
+(defclass large-object-input-stream
+    (fundamental-input-stream
+     large-object-stream-mixin)
+  ())
+
+(defclass large-object-output-stream
+    (fundamental-output-stream
+     large-object-stream-mixin)
+  ((buffer :initform (make-array 0 :element-type '(unsigned-byte 8))
+	   :reader buffer-of)))
+
+(defmethod stream-element-type ((stream large-object-stream-mixin))
   '(unsigned-byte 8))
 
-(defun open-large-object (oid mode)
-  (make-instance 'large-object-stream
-		 :fd (lo-open oid mode)))
+(defmethod close (stream &key abort)
+  (when (not (null abort))
+    
+  (lo-close (fd-of stream))
 
-(defmethod stream-write-sequence ((stream large-object-stream)
-				  sequence start end
-				  &key &allow-other-keys)
-  (lo-write (fd-of stream) (subseq sequence start end)))
+(defmethod stream-file-position ((stream large-object-stream))
+  (lo-tell (fd-of stream)))
+
+(defmethod (setf stream-file-position) (position-spec (stream large-object-stream))
+  (apply #'lo-lseek (fd-of stream) position-spec))
+
+;;(defmethod stream-clear-input stream
 
 (defmethod stream-read-sequence ((stream large-object-stream)
 				 sequence start end
@@ -59,11 +74,26 @@
      do (setf (elt sequence index) element)
      finally (return index)))
 
-(defmethod stream-file-position ((stream large-object-stream))
-  (lo-tell (fd-of stream)))
+;;(defmethod stream-clear-output stream
 
-(defmethod (setf stream-file-position) (position-spec (stream large-object-stream))
-  (apply #'lo-lseek (fd-of stream) position-spec))
+;;(defmethod stream-finish-output stream
+
+;;(defmethod stream-force-output stream
+
+(defmethod stream-write-sequence ((stream large-object-stream)
+				  sequence start end
+				  &key &allow-other-keys)
+  (lo-write (fd-of stream) (subseq sequence start end)))
+
+(defmethod stream-read-byte ((stream large-object-stream))
+  (first (lo-read (fd-of stream) 1)))
+
+(defmethod stream-write-byte ((stream large-object-stream) integer)
+  (lo-write (fd-of stream) (vector integer)))
+
+(defun open-large-object (oid mode)
+  (make-instance 'large-object-stream
+		 :fd (lo-open oid mode)))
 
 ;;(defprepared-with-names lo_import (pathname)
 ;;  ((:select (:lo-create oid)) :single))
