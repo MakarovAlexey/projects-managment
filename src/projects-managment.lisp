@@ -1,8 +1,10 @@
 (in-package #:projects-managment)
 
-(manardb:use-mmap-dir "/home/makarov/projects/projects-managment/data/"
-		      :if-does-not-exist :create)
-(open-all-mmaps)
+(defclass project () ())
+
+;;(manardb:use-mmap-dir "/home/amakarov/src/lisp/projects-managment/data/"
+;;		      :if-does-not-exist :create)
+;;(open-all-mmaps)
 
 					;****
  
