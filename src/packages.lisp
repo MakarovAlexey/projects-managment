@@ -1,5 +1,5 @@
 (defpackage #:projects-managment
-  (:use :cl :manardb)
+  (:use :closer-common-lisp)
   (:export :project
            :task-group-child
            :task-group
@@ -26,20 +26,3 @@
            :document-list-of
            :properties-of
            :stream-of))
-
-(defpackage #:large-object
-  (:use #:cl #:postmodern #:trivial-gray-streams)
-  (:export #:+INV-ARCHIVE+
-	   #:+INV-WRITE+
-	   #:+INV-READ+
-	   #:+LARGE-OBJECT-BUFFER-SIZE+
-	   #:open-large-object
-	   #:lo-create
-	   #:lo-unlink
-	   #:lo-open
-	   #:lo-close
-	   #:lo-write
-	   #:lo-read))
-
-(defpackage #:large-object.test
-  (:use #:cl #:large-object #:lift))

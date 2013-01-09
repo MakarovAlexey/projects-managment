@@ -53,10 +53,10 @@
 (defmethod stream-element-type ((stream large-object-stream-mixin))
   '(unsigned-byte 8))
 
-(defmethod close (stream &key abort)
-  (when (not (null abort))
-    
-  (lo-close (fd-of stream))
+;;(defmethod close (stream &key abort)
+;;  (when (not (null abort)
+;;    
+;;  (lo-close (fd-of stream))
 
 (defmethod stream-file-position ((stream large-object-stream))
   (lo-tell (fd-of stream)))
