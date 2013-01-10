@@ -1,6 +1,63 @@
 (in-package :projects-managment)
 
-;;
+(defclass file ()
+  ((lo :initarg :oid
+       :reader lo-of
+       :documentation "Идентификатор файла и одновременно идентификатор LOB'a")
+   (content-type :initarg :content-type
+		 :accessor content-type-of
+		 :documentation "MIME-тип файла")
+   (name :initarg :name
+	 :accessor name-of
+	 :documentation "Имя файла, может быть не уникальным")))
+
+(defclass document-type ()
+  ((id :initarg :id
+       :reader id-of)
+   (name :initarg :name
+	 :accessor name-of)))
+
+(defclass document ()
+  ((project :initarg :project
+	    :reader project-of)
+   (document-type :initarg :document-type
+		  :accessor document-type-of
+		  :documentation "Тип документа, пиьсмо, договор и т.д.")
+   (copy-type :initarg :copy-type
+	      :accessor copy-type-of
+	      :documentation "оригинал, копия или электронная копия")
+   (name :initarg :name
+	 :accessor name-of
+	 :documentation "Название/Содержание")
+   (files :initarg :files
+	  :accessor files-of
+	  :documentation "Файлы документа")
+   (attachments :initarg :attachments
+		:accessor attachments-of
+		:documentation "документы на которые ссылается данный документ")))
+
+(defclass incoming-document (document)
+  (;;(number :documentation "Номер по реестру") в преокте номером по реестру будет индекс в массиве хранящем документы
+   (sender :initarg :sender
+	   :accessor sender-of
+	   :documentation "Контрагент-отправитель")))
+
+(defclass outgoing-document (document)
+  (;;(number :documentation "Номер по реестру")
+   (reciever :initarg :sender
+	     :accessor sender-of
+	     :documentation "Контрагент-получатель")))
+
+(defclass inner-document (document)
+  (;;(number :documentation "Номер по реестру")
+   (sender :initarg :sender
+	   :accessor sender-of
+	   :documentation "Сотрудник-отпарвитель")
+   (reciever :initarg :sender
+	     :accessor sender-of
+	     :documentation "Сотрудник-получатель")))
+
+;; task:id (parent-task-id index) предписание:id (project-id index)
 
 ;;(defclass process-instance ()
 ;;  ((process :initarg :process

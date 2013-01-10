@@ -15,20 +15,17 @@
 		 :cl-who
 		 :restas
 		 :closure-template
-		 :manardb
 		 :postmodern
-		 :trivial-gray-streams
-		 :lift)
+		 :lift
+		 :closer-mop)
     :defsystem-depends-on (:closure-template)
     :serial t
-    :components ((:module "templates"
-			  :components ((:closure-template-file "index")))
+    :components (;;(:module "templates"
+	;;		  :components ((:closure-template-file "index")))
 		 (:module "src"
 			  :serial t
-                          :depends-on ("templates")
+;;                          :depends-on ("templates")
 			  :components ((:file "packages")
-				       (:file "large-object")
-				       (:file "large-object-tests")
-				       (:file "scheme")
-				       (:file "projects-managment")
-				       (:file "web")))))
+				       (:file "class")
+				       (:file "projects-managment")))))
+				       ;;(:file "web")))))
