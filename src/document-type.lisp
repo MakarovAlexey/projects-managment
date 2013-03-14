@@ -1,22 +1,20 @@
 (in-package #:projects-managment)
 
-(defclass document-directory ()
-  ((name :initarg :name
-	 :accessor name-of)
-   (subdirectories :initform nil
-		   :accessor subdirectories-of)
-   (document-types :initform nil
-	      :accessor document-types-of)))
+(defpclass* document-directory ()
+  ((name :type string)))
 
-(defclass root-directory (document-directory) ())
-
-(defclass common-directory (document-directory)
-  ((parent-directory :initarg :parent-directory
-		     :accessor parent-directory-of)))
-
-(defclass document-type ()
-  ((name :initarg :name
-	 :accessor name-of)
-   (parent-directory :initarg :parent-directory
-		     :accessor parent-directory-of))
+(defpclass document-type ()
+  ((name :type string))
   (:documentation "Тип документа"))
+
+(defpassociation*
+  ((:class document-directory :slot document-types :type (hu.dwim.perec:set document-type))
+   (:class document-type :slot parent-directory :type document-directory)))
+
+(defpclass* common-directory (document-directory) ())
+
+(defpassociation*
+  ((:class document-directory :slot subdirectories :type (hu.dwim.perec:set common-directory))
+   (:class common-directory :slot parent-directory :type document-directory)))
+
+(defpclass* root-directory (document-directory) ())
