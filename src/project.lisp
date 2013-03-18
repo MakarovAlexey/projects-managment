@@ -12,20 +12,21 @@
    (:class project-participant
 	   :slot project :type project)))
 
-(defpclass* person-participation () ())
+(defpclass* user ()
+  ((name :type string)
+   (login :type string)
+   (password :type string)
+   (email :type string))
+  (:documentation "Пользователь системы, ответственный исполнитель"))
+
+(defpclass* membership ()
+  ()
+  (:documentation "Участие в одной из групп реализации проекта"))
 
 (defpassociation*
-  ((:class project-participant
-	   :slot person-participations
-	   :type (hu.dwim.perec:set person-participation))
-   (:class person-participation
-	   :slot project-participant
-	   :type project-participant)))
+  ((:class membership :slot project-participant :type project-participant)
+   (:class project-participant :slot memberships :type (hu.dwim.perec:set membership))))
 
 (defpassociation*
-  ((:class person
-	   :slot person-participations
-	   :type (hu.dwim.perec:set person-participation))
-   (:class person-participation
-	   :slot person
-	   :type person)))
+  ((:class membership :slot user :type user)
+   (:class user :slot memberships :type membership)))
