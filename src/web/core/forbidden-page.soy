@@ -1,0 +1,14 @@
+{namespace projects-managment.web.core}
+
+{template forbidden-page}
+    {call base-page}
+        {param title: '403 Forbidden' /}
+        {param user: $user /}
+        {param body}
+            <h1>Forbidden</h1>
+            <p>
+                You don't have permission to access {$uri} on this server.
+            <p>
+        {/param}
+    {/call}
+{/template}

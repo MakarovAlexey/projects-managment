@@ -1,29 +1,34 @@
 (in-package #:projects-managment)
 
-(defpclass* expense-group ()
-  ((name :type string)))
-
-(defpclass* expense-item ()
-  ((name :type string)))
+(defpclass* expense ()
+  ((cost :type money))
+  (:documentation "Расход задачи"))
 
 (defpassociation*
-  ((:class expence-group
-	   :slot expense-items
-	   :type (hu.dwim.perec:set expense-item))
-   (:class expense-item
-	   :slot parent-group
-	   :type expence-group)))
-
-(defpclass* common-expense-group (expense-group)
-  ())
+  ((:class expense :slot expense-item
+	   :type expense-item
+	   :documentation "Статья расхода")
+   (:class expense-item :slot expenses
+	   :type expense
+	   :documentation "Расходы по статье. Включают все проекты")))
 
 (defpassociation*
-  ((:class expense-group
-	   :slot expense-items
-	   :type (hu.dwim.perec:set common-expense-group)
-   (:class common-expense-group
-	   :slot parent-group
-	   :type expense-group)))
+  ((:class task :slot expenses
+	   :type (hu.dwim.perec:set expense)
+	   :documentation "Расходы связанные с задачей")
+   (:class expense :slot task
+	   :type task)))
 
-(defpclass* root-expence-group (expence-group)
-  ())
+(defpassociation*
+  ((:class task :slot expenses
+	   :type (hu.dwim.perec:set expense)
+	   :documentation "Расходы связанные с задачей")
+   (:class expense :slot task
+	   :type task)))
+
+(defpassociation*
+  ((:class project :slot expenses
+	   :type (hu.dwim.perec:set expense)
+	   :documentation "Расходы связанные с проектом")
+   (:class expense :slot project
+	   :type project)))

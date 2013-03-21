@@ -3,7 +3,7 @@
 (defpclass* document-directory ()
   ((name :type string)))
 
-(defpclass document-type ()
+(defpclass* document-type ()
   ((name :type string))
   (:documentation "Тип документа"))
 

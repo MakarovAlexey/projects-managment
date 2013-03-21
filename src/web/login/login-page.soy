@@ -1,0 +1,32 @@
+{namespace projects-managment.web.login}
+
+{template login-page}
+  {call projects-managment.web.core.base}
+        {param title: 'Вход в систему' /}
+        {param body}
+	  <h1>Добро пожаловать в систему управления проектами</h1>
+	  <h2>Вход в систему:</h2>
+	  <p>Для пользователей:</p>
+	  <form action="user-login" method="post">
+	    <p>
+	      Логин: <input type="text" name="login" required="true"/>
+	    </p>
+	    <p>
+	      Пароль: <input type="password" name="password" required="true"/>
+	    </p>
+	    <p>
+	      <input type="submit" value="Войти"/>
+	    </p>
+	  </form>
+	  <p>Для администратора:</p>
+	  <form action="root-login" method="post">
+	    <p>
+	      <input type="password" name="password" required="true"/>
+	    </p>
+	    <p>
+	      <input type="submit" value="Войти"/>
+	    </p>
+	  </form>
+        {/param}
+    {/call}
+{/template}
