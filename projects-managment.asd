@@ -22,12 +22,13 @@
 				     ;;(:file "expense")
 				     ;;(:file "web")
 				     ))
-	       (:module "web"
+	       (:module "templates"
+			:components ((:soy-file "base")
+				     (:soy-file "forbidden")
+				     (:soy-file "internal-server-error")
+				     (:soy-file "login")))
+	       (:module "routes"
 			:serial t
 			:components ((:file "module")
-				     (:module "core"
-					      :components ((:soy-file "base-page")
-							   (:soy-file "forbidden-page")
-							   (:soy-file "internal-server-error-page")))
-				     (:module "login"
-					      :components ((:soy-file "login-page")))))))
+				     (:file "login")
+				     (:file "index")))))
