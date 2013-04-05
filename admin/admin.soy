@@ -1,0 +1,24 @@
+{namespace projects-managment.admin.index}
+
+{template page}
+  {call projects-managment.web.core.base}
+        {param title: 'Управление учетными записями и регистрация проектов' /}
+        {param body}
+	  <h3>Управление учетных записей и регистрация проектов</h3>
+	  <p>Учетные записи:</p>
+	  <ul>
+	    {foreach $user in $users}
+	      <li>$user.name</li>
+	    {/foreach}
+	    <li><a href="/admin/new-user">Добавить пользователя</a></li>
+	  </ul>
+	  <p>Проекты:</p>
+	  <ul>
+	    {foreach $project in $projects}
+	      <li>$project.name</li>
+	    {/foreach}
+	    <li>Добавить проект</li>
+	  </ul>
+        {/param}
+    {/call}
+{/template}
